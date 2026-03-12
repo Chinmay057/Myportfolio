@@ -99,18 +99,23 @@ const BokehBlobs = () => {
 }
 
 /* ─── Fixed full-screen canvas ───────────────────────────────────── */
-const ParticleBackground = () => (
-    <div style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}>
-        <Canvas
-            camera={{ position: [0, 0, 10], fov: 55 }}
-            dpr={[1, 1.5]}
-            gl={{ antialias: false, alpha: true }}
-            style={{ background: 'transparent' }}
-        >
-            <Particles />
-            <BokehBlobs />
-        </Canvas>
-    </div>
-)
+const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent))
+
+const ParticleBackground = () => {
+    if (isMobile) return null;
+    return (
+        <div style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}>
+            <Canvas
+                camera={{ position: [0, 0, 10], fov: 55 }}
+                dpr={[1, 1.5]}
+                gl={{ antialias: false, alpha: true }}
+                style={{ background: 'transparent' }}
+            >
+                <Particles />
+                <BokehBlobs />
+            </Canvas>
+        </div>
+    )
+}
 
 export default ParticleBackground

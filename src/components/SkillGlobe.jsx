@@ -216,27 +216,47 @@ const GlobeScene = () => {
 }
 
 /* ─── Exported wrapper ───────────────────────────────────────────── */
-const SkillGlobe = () => (
-    <div style={{ width: '100%', height: '520px', cursor: 'grab', userSelect: 'none' }}>
-        <Canvas
-            camera={{ position: [0, 0, 5.5], fov: 48 }}
-            dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: true }}
-            style={{ background: 'transparent' }}
-        >
-            <GlobeScene />
-        </Canvas>
-        <p style={{
-            textAlign: 'center',
-            fontSize: '0.68rem',
-            color: 'rgba(168,139,250,0.45)',
-            marginTop: '-10px',
-            userSelect: 'none',
-            letterSpacing: '0.08em',
-        }}>
-            drag to rotate
-        </p>
-    </div>
-)
+const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent))
+
+const SkillGlobe = () => {
+    if (isMobile) {
+        return (
+            <div style={{ width: '100%', padding: '40px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+                 <p style={{ color: 'rgba(168,139,250,0.5)', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>✦ Tech Stack ✦</p>
+                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', padding: '0 20px' }}>
+                    {SKILLS.map(s => (
+                        <span key={s.id} style={{
+                            padding: '6px 14px', borderRadius: 999, fontSize: '0.75rem',
+                            background: `${s.color}15`, color: s.color, border: `1px solid ${s.color}40`
+                        }}>{s.label}</span>
+                    ))}
+                 </div>
+            </div>
+        )
+    }
+
+    return (
+        <div style={{ width: '100%', height: '520px', cursor: 'grab', userSelect: 'none' }}>
+            <Canvas
+                camera={{ position: [0, 0, 5.5], fov: 48 }}
+                dpr={[1, 1.5]}
+                gl={{ antialias: true, alpha: true }}
+                style={{ background: 'transparent' }}
+            >
+                <GlobeScene />
+            </Canvas>
+            <p style={{
+                textAlign: 'center',
+                fontSize: '0.68rem',
+                color: 'rgba(168,139,250,0.45)',
+                marginTop: '-10px',
+                userSelect: 'none',
+                letterSpacing: '0.08em',
+            }}>
+                drag to rotate
+            </p>
+        </div>
+    )
+}
 
 export default SkillGlobe
