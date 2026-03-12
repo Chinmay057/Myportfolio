@@ -1,0 +1,338 @@
+@import "tailwindcss";
+
+/* ─── Smooth scrolling ────────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #030712;
+    background-image:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(120,40,255,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(236,72,153,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(80,20,200,0.08) 0%, transparent 70%);
+    background-attachment: fixed;
+    animation: gradientShift 12s ease-in-out infinite alternate;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-image:
+            radial-gradient(ellipse 80% 60% at 20% 10%, rgba(120,40,255,0.22) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 80% 80%, rgba(236,72,153,0.12) 0%, transparent 55%),
+            radial-gradient(ellipse 70% 60% at 50% 50%, rgba(80,20,200,0.08) 0%, transparent 70%);
+    }
+    33% {
+        background-image:
+            radial-gradient(ellipse 70% 55% at 70% 20%, rgba(139,92,246,0.20) 0%, transparent 60%),
+            radial-gradient(ellipse 80% 60% at 10% 70%, rgba(168,85,247,0.14) 0%, transparent 55%),
+            radial-gradient(ellipse 60% 50% at 60% 80%, rgba(244,114,182,0.08) 0%, transparent 70%);
+    }
+    66% {
+        background-image:
+            radial-gradient(ellipse 90% 70% at 50% 5%, rgba(109,40,217,0.18) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 90% 50%, rgba(196,181,253,0.08) 0%, transparent 55%),
+            radial-gradient(ellipse 50% 60% at 20% 90%, rgba(236,72,153,0.10) 0%, transparent 70%);
+    }
+    100% {
+        background-image:
+            radial-gradient(ellipse 75% 55% at 30% 15%, rgba(124,58,237,0.25) 0%, transparent 60%),
+            radial-gradient(ellipse 70% 60% at 75% 85%, rgba(236,72,153,0.14) 0%, transparent 55%),
+            radial-gradient(ellipse 80% 70% at 50% 50%, rgba(76,29,149,0.10) 0%, transparent 70%);
+    }
+}
+
+/* ─── Bounce animation for scroll hint chevron ────────────────── */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(6px);
+    }
+}
+
+/* ─── Pulse animation for live badge dot ─────────────────────── */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.5);
+    }
+
+    50% {
+        opacity: 0.7;
+        box-shadow: 0 0 0 5px rgba(167, 139, 250, 0);
+    }
+}
+
+/* ─── Hide unicorn.studio watermark ──────────────────────────── */
+a[href*="unicorn.studio"],
+a[href*="unicornstudio"],
+div[class*="unicorn-badge"],
+div[id*="unicorn-badge"],
+[data-us-badge],
+canvas~a {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ─── 3D button hover effect ──────────────────────────────────── */
+.btn-3d {
+    transform: translateZ(0) translateY(0);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+        box-shadow 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-3d:hover {
+    transform: translateY(-3px) translateZ(8px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.25);
+}
+
+.btn-3d:active {
+    transform: translateY(1px) translateZ(0px) scale(0.99);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Floating hero orbs animation ───────────────────────────── */
+@keyframes floatOrb {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-15px, -20px) scale(1.05);
+    }
+
+    100% {
+        transform: translate(10px, 15px) scale(0.95);
+    }
+}
+
+/* ─── Skill pill hover lift ───────────────────────────────────── */
+.skill-pill {
+    transform: translateZ(0);
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-pill:hover {
+    transform: translateY(-2px) translateZ(4px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+/* ─── Section heading 3D depth pop on scroll ─────────────────── */
+.section-heading {
+    transform-style: preserve-3d;
+}
+
+/* ─── Glassmorphism navbar on scroll ─────────────────────────── */
+.navbar-glass {
+    background: rgba(3, 7, 18, 0.55);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.12);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(139, 92, 246, 0.15);
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ─── Timeline glow dot pulse ─────────────────────────────────── */
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 6px var(--dot-color), 0 0 12px var(--dot-color);
+    }
+
+    50% {
+        box-shadow: 0 0 14px var(--dot-color), 0 0 28px var(--dot-color);
+    }
+}
+
+/* ─── Glossy rotating border hover effect ────────────────────── */
+@property --gloss-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes glossySpin {
+    to { --gloss-angle: 360deg; }
+}
+
+.glossy-hover {
+    position: relative;
+    isolation: isolate;
+}
+
+.glossy-hover::after {
+    content: '';
+    position: absolute;
+    inset: -1.5px;
+    border-radius: inherit;
+    background: conic-gradient(
+        from var(--gloss-angle),
+        transparent 0deg,
+        rgba(255, 255, 255, 0.0) 60deg,
+        rgba(255, 255, 255, 0.75) 100deg,
+        rgba(255, 255, 255, 0.9) 120deg,
+        rgba(255, 255, 255, 0.75) 140deg,
+        rgba(255, 255, 255, 0.0) 180deg,
+        transparent 360deg
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1.5px;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    animation: glossySpin 2.0s linear infinite;
+    animation-play-state: paused;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glossy-hover:hover::after {
+    opacity: 1;
+    animation-play-state: running;
+}
+
+/* Apply glossy effect broadly to key interactive elements */
+.skill-pill {
+    isolation: isolate;
+}
+
+.skill-pill::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 999px;
+    background: conic-gradient(
+        from var(--gloss-angle),
+        transparent 0deg,
+        rgba(255,255,255,0.8) 110deg,
+        rgba(255,255,255,0.9) 130deg,
+        rgba(255,255,255,0.8) 150deg,
+        transparent 210deg,
+        transparent 360deg
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: glossySpin 1.8s linear infinite;
+    animation-play-state: paused;
+    pointer-events: none;
+}
+
+.skill-pill:hover::after {
+    opacity: 1;
+    animation-play-state: running;
+}
+
+/* ─────────────────────────────────────────────────────────
+   STREAMING BORDER — always-on white arc sweeping around
+   any element with class="streaming-border"
+───────────────────────────────────────────────────────── */
+.streaming-border {
+    position: relative;
+    isolation: isolate;
+}
+.streaming-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+        from var(--gloss-angle),
+        transparent 0deg,
+        rgba(255,255,255,0.0) 50deg,
+        rgba(255,255,255,0.85) 95deg,
+        rgba(255,255,255,1.0) 115deg,
+        rgba(255,255,255,0.85) 135deg,
+        rgba(255,255,255,0.0) 180deg,
+        transparent 360deg
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: glossySpin 3s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ─── Horizontal shimmer line sweeping across cards ──────── */
+@keyframes shimmerSlide {
+    0%   { transform: translateX(-120%); }
+    100% { transform: translateX(220%); }
+}
+
+.shimmer-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.04) 40%,
+        rgba(255,255,255,0.10) 50%,
+        rgba(255,255,255,0.04) 60%,
+        transparent 100%
+    );
+    animation: shimmerSlide 4s ease-in-out infinite;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+}
+
+/* Apply shimmer to all neutral-800 bordered cards automatically */
+.group.relative.overflow-hidden,
+.rounded-2xl.border.border-neutral-800 {
+    overflow: hidden;
+}
+.group.relative.overflow-hidden::after,
+.rounded-2xl.border.border-neutral-800::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 45%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.03) 40%,
+        rgba(255,255,255,0.07) 50%,
+        rgba(255,255,255,0.03) 60%,
+        transparent 100%
+    );
+    animation: shimmerSlide 6s ease-in-out infinite;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+}

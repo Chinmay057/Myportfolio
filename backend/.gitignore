@@ -1,0 +1,4 @@
+serviceAccountKey.json
+feedback_data.xlsx
+__pycache__/
+*.pyc
