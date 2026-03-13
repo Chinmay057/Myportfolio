@@ -16,21 +16,25 @@ const TIMELINE = [
 ]
 
 const fadeLeft = (delay) => ({
-    hidden: { x: -50, opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 0.7, delay } },
+    hidden: { x: -30, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.4, delay } },
 })
 
 const fadeRight = (delay) => ({
-    hidden: { x: 50, opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 0.7, delay } },
+    hidden: { x: 30, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.4, delay } },
 })
 
 /* ─── 3D tilt on profile image ────────────────────────────────── */
+import { useIsMobile } from '../hooks/useIsMobile'
+
 const ProfileCard3D = ({ children }) => {
     const cardRef = useRef(null)
     const frameRef = useRef(null)
+    const isMobile = useIsMobile()
 
     const handleMouseMove = useCallback((e) => {
+        if (isMobile) return
         if (frameRef.current) cancelAnimationFrame(frameRef.current)
         frameRef.current = requestAnimationFrame(() => {
             const card = cardRef.current
@@ -41,14 +45,19 @@ const ProfileCard3D = ({ children }) => {
             card.style.transform = `perspective(800px) rotateY(${nx * 14}deg) rotateX(${-ny * 14}deg) translateZ(12px)`
             card.style.transition = 'transform 0.08s linear'
         })
-    }, [])
+    }, [isMobile])
 
     const handleMouseLeave = useCallback(() => {
+        if (isMobile) return
         if (cardRef.current) {
             cardRef.current.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px)'
             cardRef.current.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)'
         }
-    }, [])
+    }, [isMobile])
+
+    if (isMobile) {
+        return <div>{children}</div>
+    }
 
     return (
         <div
@@ -69,7 +78,7 @@ const About = () => {
             <motion.p
                 whileInView={{ opacity: 1, y: 0 }}
                 initial={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
                 viewport={{ once: true }}
                 className="mb-4 text-center text-xs uppercase tracking-widest text-purple-400"
             >

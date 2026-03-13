@@ -38,7 +38,7 @@ const Projects = () => {
             <motion.p
                 whileInView={{ opacity: 1, y: 0 }}
                 initial={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
                 viewport={{ once: true }}
                 className="mb-4 text-center text-xs uppercase tracking-widest text-purple-400"
             >
@@ -48,7 +48,7 @@ const Projects = () => {
             <motion.h2
                 whileInView={{ opacity: 1, y: 0 }}
                 initial={{ opacity: 0, y: -40 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.3 }}
                 viewport={{ once: true }}
                 className="mb-4 text-center text-5xl font-thin tracking-tight"
             >
@@ -58,7 +58,7 @@ const Projects = () => {
             <motion.p
                 whileInView={{ opacity: 1 }}
                 initial={{ opacity: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
                 viewport={{ once: true }}
                 className="mx-auto mb-16 max-w-xl text-center text-sm text-neutral-500"
             >
@@ -70,10 +70,10 @@ const Projects = () => {
                 {PROJECTS.map((project, i) => (
                     <motion.div
                         key={project.title}
-                        initial={{ opacity: 0, y: 60, rotateX: -20, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 40, rotateX: -10, scale: 0.98 }}
                         whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: i * 0.12 }}
+                        viewport={{ once: true, margin: '-50px' }}
+                        transition={{ duration: 0.4, delay: i * 0.08 }}
                         style={{ perspective: 1200 }}
                     >
                         <Card3D

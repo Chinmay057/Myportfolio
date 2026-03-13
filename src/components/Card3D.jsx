@@ -1,4 +1,5 @@
 import React, { useRef, useCallback } from 'react'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 /**
  * Card3D – wraps children in a CSS perspective container.
@@ -14,8 +15,10 @@ const Card3D = ({ children, className = '', maxTilt = 12, glareColor = 'rgba(139
     const cardRef = useRef(null)
     const glareRef = useRef(null)
     const frameRef = useRef(null)
+    const isMobile = useIsMobile()
 
     const handleMouseMove = useCallback((e) => {
+        if (isMobile) return
         if (frameRef.current) cancelAnimationFrame(frameRef.current)
         frameRef.current = requestAnimationFrame(() => {
             const card = cardRef.current
@@ -40,15 +43,24 @@ const Card3D = ({ children, className = '', maxTilt = 12, glareColor = 'rgba(139
                 glareRef.current.style.opacity = '1'
             }
         })
-    }, [maxTilt, glareColor])
+    }, [maxTilt, glareColor, isMobile])
 
     const handleMouseLeave = useCallback(() => {
+        if (isMobile) return
         const card = cardRef.current
         if (!card) return
         card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0px)'
         card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)'
         if (glareRef.current) glareRef.current.style.opacity = '0'
-    }, [])
+    }, [isMobile])
+
+    if (isMobile) {
+        return (
+            <div className={`${className}`}>
+                {children}
+            </div>
+        )
+    }
 
     return (
         <div

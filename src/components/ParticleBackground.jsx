@@ -99,9 +99,11 @@ const BokehBlobs = () => {
 }
 
 /* ─── Fixed full-screen canvas ───────────────────────────────────── */
-const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent))
+import { useIsMobile } from '../hooks/useIsMobile'
 
+/* ─── Fixed full-screen canvas ───────────────────────────────────── */
 const ParticleBackground = () => {
+    const isMobile = useIsMobile();
     if (isMobile) return null;
     return (
         <div style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}>

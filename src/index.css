@@ -12,7 +12,7 @@ body {
         radial-gradient(ellipse 60% 50% at 80% 80%, rgba(236,72,153,0.10) 0%, transparent 55%),
         radial-gradient(ellipse 70% 60% at 50% 50%, rgba(80,20,200,0.08) 0%, transparent 70%);
     background-attachment: fixed;
-    animation: gradientShift 12s ease-in-out infinite alternate;
+    animation: gradientShift 6s ease-in-out infinite alternate;
 }
 
 @keyframes gradientShift {
@@ -335,4 +335,25 @@ canvas~a {
     pointer-events: none;
     border-radius: inherit;
     z-index: 1;
+}
+
+/* ─────────────────────────────────────────────────────────
+   HERO DISPLAY FALLBACKS (Force hide 3D on mobile)
+───────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .laptop-hero-wrapper {
+        display: none !important;
+    }
+    .mobile-hero-wrapper {
+        display: block !important;
+    }
+}
+
+@media (min-width: 1025px) {
+    .laptop-hero-wrapper {
+        display: block !important;
+    }
+    .mobile-hero-wrapper {
+        display: none !important;
+    }
 }

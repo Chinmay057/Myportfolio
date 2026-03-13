@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react'
+import React, { useRef, useMemo, useEffect, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -230,29 +230,25 @@ const SceneParticles = ({ progressRef }) => {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   useScreenPortal
-   ─────────────────────────────────────────────────────────
-   Tracks the canvas element's size to figure out where the
-   laptop screen sits in screen-space.  The laptop screen:
-     • World pos:  x=0, y ≈ 1.18, z ≈ 0.145  (SD+0.012 above hinge)
-     • Screen half-size: (SW-0.28)/2 × (SH-0.28)/2 ≈ 1.36 × 0.81
-
-   We project those corners with the live camera to get the
-   CSS rect, then use it to drive the portal clip.
-═══════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════
    Main hero component
 ═══════════════════════════════════════════════════════════ */
 const LaptopHero = () => {
     const sectionRef = useRef(null)
     const progressRef = useRef(0)
-    const cameraRef = useRef(null)
-    const canvasRef = useRef(null)
     const [scrollPct, setScrollPct] = useState(0)
+    const [isDesktopContent, setIsDesktopContent] = useState(true)
+
+    // Ensure we only mount WebGL on desktop sizes
+    useEffect(() => {
+        const checkWidth = () => setIsDesktopContent(window.innerWidth > 1024)
+        checkWidth() // Trigger once on mount
+        window.addEventListener('resize', checkWidth)
+        return () => window.removeEventListener('resize', checkWidth)
+    }, [])
 
     /* scroll tracker */
     useEffect(() => {
+        if (!isDesktopContent) return // Don't track scrolling on mobile
         const onScroll = () => {
             if (!sectionRef.current) return
             const rect = sectionRef.current.getBoundingClientRect()
@@ -263,7 +259,7 @@ const LaptopHero = () => {
         }
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
-    }, [])
+    }, [isDesktopContent])
 
     /* ── Portal animation values ─────────────────────────────────
        zoom phase: p goes 0.45 → 1.0
@@ -271,8 +267,7 @@ const LaptopHero = () => {
        
        The "screen" on the canvas sits roughly centred horizontally,
        vertically about 55 % up the viewport.
-       We animate a clip-rect from that small rectangle outward to
-       fill the entire viewport.
+       We update the CSS rect to drive the portal clip.
     ─────────────────────────────────────────────────────────── */
     const raw = Math.max(0, Math.min(1, (scrollPct - 0.45) / 0.55))
     // ease-in-out quad
@@ -323,21 +318,23 @@ const LaptopHero = () => {
                 }} />
 
                 {/* ── Three.js canvas ─────────────────────────────── */}
-                <Canvas
-                    camera={{ position: [0, 1.0, 5.5], fov: 44 }}
-                    dpr={[1, 1.5]}
-                    gl={{ antialias: true, alpha: true }}
-                    shadows
-                    style={{ position: 'absolute', inset: 0 }}
-                >
-                    <CameraRig progressRef={progressRef} />
-                    <ambientLight intensity={0.45} />
-                    <directionalLight position={[4, 8, 5]} intensity={1.4} castShadow />
-                    <directionalLight position={[-4, 2, -3]} intensity={0.5} color="#a78bfa" />
-                    <pointLight position={[0, 6, 4]} intensity={0.7} color="#f472b6" distance={14} />
-                    <SceneParticles progressRef={progressRef} />
-                    <LaptopModel progressRef={progressRef} />
-                </Canvas>
+                {isDesktopContent && (
+                    <Canvas
+                        camera={{ position: [0, 1.0, 5.5], fov: 44 }}
+                        dpr={[1, 1.5]}
+                        gl={{ antialias: true, alpha: true }}
+                        shadows
+                        style={{ position: 'absolute', inset: 0 }}
+                    >
+                        <CameraRig progressRef={progressRef} />
+                        <ambientLight intensity={0.45} />
+                        <directionalLight position={[4, 8, 5]} intensity={1.4} castShadow />
+                        <directionalLight position={[-4, 2, -3]} intensity={0.5} color="#a78bfa" />
+                        <pointLight position={[0, 6, 4]} intensity={0.7} color="#f472b6" distance={14} />
+                        <SceneParticles progressRef={progressRef} />
+                        <LaptopModel progressRef={progressRef} />
+                    </Canvas>
+                )}
 
                 {/* ════════════════════════════════════════════════════
                     PORTAL EFFECT
@@ -518,7 +515,7 @@ const LaptopHero = () => {
                             background: '#a78bfa', flexShrink: 0,
                             animation: 'pulse 2s infinite',
                         }} />
-                        Data Analyst &amp; Machine Learning Engineer
+                        Data Analyst &amp; Machine Engineer
                     </div>
                 </div>
 

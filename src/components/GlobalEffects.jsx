@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 /* ─────────────────────────────────────────────────────────────
    GlobalEffects
@@ -11,13 +12,12 @@ import React, { useEffect, useRef } from 'react'
 
    Mobile: reduced to 30 particles, no shadowBlur, no beams/orbs
 ───────────────────────────────────────────────────────────── */
-const isMobile = () => window.innerWidth < 768 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
-const NUM_PARTICLES = isMobile() ? 30 : 120
+const NUM_PARTICLES = 120
 
 const GlobalEffects = () => {
     const canvasRef = useRef(null)
     const rafRef = useRef(null)
-    const mobile = isMobile()
+    const mobile = useIsMobile()
 
     useEffect(() => {
         const canvas = canvasRef.current
@@ -50,6 +50,7 @@ const GlobalEffects = () => {
         }))
 
         const draw = () => {
+            if (mobile) return // Stop loop entirely if mobile
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             particles.forEach(p => {
                 p.x += p.vx
@@ -74,13 +75,17 @@ const GlobalEffects = () => {
             })
             rafRef.current = requestAnimationFrame(draw)
         }
-        draw()
+        if (!mobile) {
+            draw()
+        }
 
         return () => {
             window.removeEventListener('resize', resize)
-            cancelAnimationFrame(rafRef.current)
+            if (rafRef.current) cancelAnimationFrame(rafRef.current)
         }
-    }, [])
+    }, [mobile])
+
+    if (mobile) return null;
 
     return (
         <>
@@ -98,7 +103,7 @@ const GlobalEffects = () => {
             />
 
             {/* ── Flowing light beams — desktop only ── */}
-            {!mobile && <div style={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none', overflow: 'hidden' }}>
+            <div style={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none', overflow: 'hidden' }}>
                 {/* Beam 1 — wide diagonal purple sweeper */}
                 <div style={{
                     position: 'absolute',
@@ -126,10 +131,10 @@ const GlobalEffects = () => {
                     animation: 'beamSweep3 20s ease-in-out infinite',
                     transformOrigin: 'bottom center',
                 }} />
-            </div>}
+            </div>
 
             {/* ── Ambient drifting orbs — desktop only ── */}
-            {!mobile && <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+            <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
                 <div style={{
                     position: 'absolute', width: 600, height: 600,
                     borderRadius: '50%',
@@ -151,7 +156,7 @@ const GlobalEffects = () => {
                     bottom: '10%', left: '30%',
                     animation: 'orbDrift3 18s ease-in-out infinite alternate',
                 }} />
-            </div>}
+            </div>
 
             <style>{`
                 @keyframes beamSweep1 {
