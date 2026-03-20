@@ -55,6 +55,20 @@ body {
     }
 }
 
+/* ─── Spin animation for loading indicators ──────────────────── */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ─── Fade-out animation for scroll hints ────────────────────── */
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}
+
 /* ─── Pulse animation for live badge dot ─────────────────────── */
 @keyframes pulse {
 

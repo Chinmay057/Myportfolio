@@ -1,5 +1,5 @@
 import React from 'react'
-import LaptopHero from './LaptopHero'
+import ScrollyCanvas from './ScrollyCanvas'
 
 /* ══ Hero ══════════════════════════════════════════════════════════
    On mobile: lightweight CSS-only hero (no WebGL / Three.js).
@@ -128,7 +128,7 @@ const Hero = () => {
                 <MobileHero />
             </div>
             <div className="laptop-hero-wrapper">
-                <LaptopHero />
+                <ScrollyCanvas />
             </div>
         </>
     )
